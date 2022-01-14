@@ -55,4 +55,4 @@ while read -r line; do
     readLine "$line"
 done < $PLIST_CONFIG_INPUT_FILE_PATH
 
-addToSwiftFile "}"
+addToSwiftFile "\n${spearator}private init() { }" "}"
