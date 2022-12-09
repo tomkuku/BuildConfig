@@ -11,7 +11,7 @@ SWIFT_CONFIG_OUTPUT_FILE_PATH="$SCRIPT_OUTPUT_FILE_0"
 chflags nouchg "$SWIFT_CONFIG_OUTPUT_FILE_PATH"
 
 if [ ! -f "$PLIST_CONFIG_INPUT_FILE_PATH" ] ; then
-    echo "Config-${CONFIGURATION}.plist file not found!"
+    echo "${CONFIGURATION}.plist file not found!"
     exit 1
 fi
 
