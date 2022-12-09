@@ -8,6 +8,8 @@
 PLIST_CONFIG_INPUT_FILE_PATH="${SRCROOT}/Configurations/Config-${CONFIGURATION}.plist"
 SWIFT_CONFIG_OUTPUT_FILE_PATH="${SRCROOT}/Configurations/Config.swift"
 
+chflags nouchg "$SWIFT_CONFIG_OUTPUT_FILE_PATH"
+
 if [ ! -f "$PLIST_CONFIG_INPUT_FILE_PATH" ] ; then
     echo "Config-${CONFIGURATION}.plist file not found!"
     exit 1
@@ -42,11 +44,11 @@ function readLine() {
         addToSwiftFile "${spearator}static let ${name}: Bool = ${key}"
         ;;
     'real') # double
-        addToSwiftFile "${spearator}static let ${name}: Double = ${key}"
+        addToSwiftFile "${spearator}static let ${name}: Double = ${val}"
   esac
 }
 
-# Deleting content of the existing output file
+# Deleting content of file
 echo "//" > $SWIFT_CONFIG_OUTPUT_FILE_PATH
 
 addToSwiftFile "//  This file is generated automatically by build_config.sh"
@@ -58,3 +60,5 @@ while read -r line; do
 done < $PLIST_CONFIG_INPUT_FILE_PATH
 
 addToSwiftFile "}"
+
+chflags uchg "$SWIFT_CONFIG_OUTPUT_FILE_PATH"
