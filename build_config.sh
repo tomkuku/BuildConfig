@@ -41,6 +41,8 @@ function readLine() {
     'true' | 'false')
         addToSwiftFile "${spearator}static let ${name}: Bool = ${key}"
         ;;
+    'real') # double
+        addToSwiftFile "${spearator}static let ${name}: Double = ${key}"
   esac
 }
 
