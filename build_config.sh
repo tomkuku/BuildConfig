@@ -5,11 +5,13 @@
 #  Created by Tomasz Kukułka on 14/01/2022.
 #
 
-PLIST_CONFIG_INPUT_FILE_PATH="${SRCROOT}/Configurations/Config-${CONFIGURATION}.plist"
-SWIFT_CONFIG_OUTPUT_FILE_PATH="${SRCROOT}/Configurations/Config.swift"
+PLIST_CONFIG_INPUT_FILE_PATH="${SCRIPT_INPUT_FILE_0}/${CONFIGURATION}.plist"
+SWIFT_CONFIG_OUTPUT_FILE_PATH="$SCRIPT_OUTPUT_FILE_0"
+
+chflags nouchg "$SWIFT_CONFIG_OUTPUT_FILE_PATH"
 
 if [ ! -f "$PLIST_CONFIG_INPUT_FILE_PATH" ] ; then
-    echo "Config-${CONFIGURATION}.plist file not found!"
+    echo "${CONFIGURATION}.plist file not found!"
     exit 1
 fi
 
@@ -41,6 +43,8 @@ function readLine() {
     'true' | 'false')
         addToSwiftFile "${spearator}static let ${name}: Bool = ${key}"
         ;;
+    'real') # double
+        addToSwiftFile "${spearator}static let ${name}: Double = ${val}"
   esac
 }
 
@@ -49,10 +53,12 @@ echo "//" > $SWIFT_CONFIG_OUTPUT_FILE_PATH
 
 addToSwiftFile "//  This file is generated automatically by build_config.sh"
 addToSwiftFile "//\n//  ⚠️   Do not modify or commit   ⚠️"
-addToSwiftFile "\nstruct Config {"
+addToSwiftFile "\nenum Config {"
 
 while read -r line; do
     readLine "$line"
 done < $PLIST_CONFIG_INPUT_FILE_PATH
 
-addToSwiftFile "\n${spearator}private init() { }" "}"
+addToSwiftFile "}"
+
+chflags uchg "$SWIFT_CONFIG_OUTPUT_FILE_PATH"
