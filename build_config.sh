@@ -46,15 +46,15 @@ function readLine() {
   esac
 }
 
-# Deleting content of file
+# Deleting content of the existing output file
 echo "//" > $SWIFT_CONFIG_OUTPUT_FILE_PATH
 
 addToSwiftFile "//  This file is generated automatically by build_config.sh"
 addToSwiftFile "//\n//  ⚠️   Do not modify or commit   ⚠️"
-addToSwiftFile "\nstruct Config {"
+addToSwiftFile "\nenum Config {"
 
 while read -r line; do
     readLine "$line"
 done < $PLIST_CONFIG_INPUT_FILE_PATH
 
-addToSwiftFile "\n${spearator}private init() { }" "}"
+addToSwiftFile "}"
